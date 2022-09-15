@@ -16,7 +16,8 @@
       "type": "string"
     },
     "favourite": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "types": {
       "type": "relation",
