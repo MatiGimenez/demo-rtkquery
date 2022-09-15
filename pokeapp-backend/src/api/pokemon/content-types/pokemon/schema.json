@@ -4,7 +4,8 @@
   "info": {
     "singularName": "pokemon",
     "pluralName": "pokemons",
-    "displayName": "pokemon"
+    "displayName": "pokemon",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -14,18 +15,17 @@
     "name": {
       "type": "string"
     },
-    "image": {
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ],
-      "type": "media",
-      "multiple": true
-    },
     "favourite": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
+    },
+    "type": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::type.type"
+    },
+    "image": {
+      "type": "string"
     }
   }
 }
