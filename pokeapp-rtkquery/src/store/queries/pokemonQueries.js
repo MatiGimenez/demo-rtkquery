@@ -6,7 +6,10 @@ export const getPokemonByNameQuery = {
 };
 
 export const getPokemonsQuery = {
-  query: () => ({ url: `pokemons?populate=*` }),
+  query: (params) => ({
+    url: `pokemons`,
+    params: { populate: "*", ...params },
+  }),
   transformResponse: (response) => ({ data: response.data, ...response.meta }),
   providesTags: (result) => {
     return result?.data

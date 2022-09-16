@@ -1,10 +1,12 @@
 import React from "react";
 import { getTypeBadgeColor } from "../../../../helpers/typeBadgeColor";
 
-const TypeBadge = ({ type }) => {
-  const {bg} = getTypeBadgeColor(type)
+const TypeBadge = ({ type, color }) => {
   return (
-    <div className={`badge badge-lg badge-outline ${bg}`}>
+    <div
+      style={{ backgroundColor: color }}
+      className={`badge badge-sm badge-outline`}
+    >
       <span className={`font-bold`}>{type}</span>
     </div>
   );

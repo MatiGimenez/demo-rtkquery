@@ -1,17 +1,18 @@
 {
-  "kind": "collectionType",
+  "kind": "singleType",
   "collectionName": "teams",
   "info": {
     "singularName": "team",
     "pluralName": "teams",
-    "displayName": "team"
+    "displayName": "team",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "pokemon": {
+    "pokemons": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::pokemon.pokemon"
