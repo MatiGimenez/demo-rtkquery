@@ -1,19 +1,21 @@
 import React from "react";
+import { FAVOURITES_ARGS_QUERY } from "../../constants";
 import {
   useGetPokemonsQuery,
   useGetTeamQuery,
 } from "../../store/slices/pokemonApi";
 import MainPokeCard from "./components/mainPokeCard/MainPokeCard";
 import PokeRowCard from "./components/pokeRowCard/PokeRowCard";
+import PokeRowCardLoading from "./components/pokeRowCard/PokeRowCardLoading";
+import PokeSquareCard from "./components/pokeSquareCard/PokeSquareCard";
 
 const Home = () => {
   const { data: { data: pokemons } = {}, isLoading } = useGetPokemonsQuery();
   const {
     data: { data: favPokemons = [] } = {},
     isLoading: isLoadingFavourites,
-  } = useGetPokemonsQuery({
-    "filters[favourite]": true,
-  });
+    isFetching: isFetchingFavourites,
+  } = useGetPokemonsQuery(FAVOURITES_ARGS_QUERY);
   const { data: { data: pokemonTeam } = {}, isLoading: isLoadingTeam } =
     useGetTeamQuery();
 
@@ -46,22 +48,21 @@ const Home = () => {
         <div className="fixed">
           <div className="p-5">
             <h4 className="font-bold mb-5">Equipo</h4>
-            <div>
+            <div className="grid grid-cols-3 gap-2 justify-items-center">
               {(pokemonTeam?.attributes?.pokemons?.data || []).map(
                 ({ id, attributes }) => (
-                  <PokeRowCard
+                  <PokeSquareCard
                     key={id}
                     name={attributes.name}
                     color={attributes.types?.data?.[0]?.attributes?.color}
                     image={attributes.image}
-                    className="mb-1"
                   />
                 )
               )}
             </div>
           </div>
           <div className="p-5">
-            <h4 className="font-bold mb-5">Favoritos</h4>
+            <h4 className="font-bold mb-5">Favoritos - {favPokemons.length}</h4>
             <div className="overflow-auto h-full">
               {favPokemons.map(({ id, attributes }) => (
                 <PokeRowCard
@@ -72,6 +73,9 @@ const Home = () => {
                   className="mb-2"
                 />
               ))}
+              {(isFetchingFavourites || isLoadingFavourites) && (
+                <PokeRowCardLoading />
+              )}
             </div>
           </div>
         </div>
