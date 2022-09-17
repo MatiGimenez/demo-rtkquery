@@ -1,10 +1,21 @@
 import React from "react";
-import { useGetPokemonsQuery } from "../../store/slices/pokemonApi";
+import {
+  useGetPokemonsQuery,
+  useGetTeamQuery,
+} from "../../store/slices/pokemonApi";
 import MainPokeCard from "./components/mainPokeCard/MainPokeCard";
+import PokeRowCard from "./components/pokeRowCard/PokeRowCard";
 
 const Home = () => {
   const { data: { data: pokemons } = {}, isLoading } = useGetPokemonsQuery();
-  console.log("DATA", pokemons);
+  const {
+    data: { data: favPokemons = [] } = {},
+    isLoading: isLoadingFavourites,
+  } = useGetPokemonsQuery({
+    "filters[favourite]": true,
+  });
+  const { data: { data: pokemonTeam } = {}, isLoading: isLoadingTeam } =
+    useGetTeamQuery();
 
   if (isLoading) {
     return (
@@ -21,15 +32,50 @@ const Home = () => {
   }
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,_1fr))] gap-4">
-      {pokemons &&
-        pokemons?.map(({ id, attributes }) => {
-          const { types, ...rest } = attributes;
-          return (
-            <MainPokeCard key={id} id={id} types={types?.data} {...rest} />
-          );
-        })}
-      <div className="grid"></div>
+    <div className="flex">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,_1fr))] gap-4 flex-1">
+        {pokemons &&
+          pokemons?.map(({ id, attributes }) => {
+            const { types, ...rest } = attributes;
+            return (
+              <MainPokeCard key={id} id={id} types={types?.data} {...rest} />
+            );
+          })}
+      </div>
+      <div className="w-40">
+        <div className="fixed">
+          <div className="p-5">
+            <h4 className="font-bold mb-5">Equipo</h4>
+            <div>
+              {(pokemonTeam?.attributes?.pokemons?.data || []).map(
+                ({ id, attributes }) => (
+                  <PokeRowCard
+                    key={id}
+                    name={attributes.name}
+                    color={attributes.types?.data?.[0]?.attributes?.color}
+                    image={attributes.image}
+                    className="mb-1"
+                  />
+                )
+              )}
+            </div>
+          </div>
+          <div className="p-5">
+            <h4 className="font-bold mb-5">Favoritos</h4>
+            <div className="overflow-auto h-full">
+              {favPokemons.map(({ id, attributes }) => (
+                <PokeRowCard
+                  key={id}
+                  name={attributes?.name}
+                  color={attributes.types?.data?.[0]?.attributes?.color}
+                  image={attributes.image}
+                  className="mb-2"
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

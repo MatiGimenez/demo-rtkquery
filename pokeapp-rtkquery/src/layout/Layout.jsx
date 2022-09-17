@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 const Layout = () => {
   return (
     <>
-      <header className="navbar bg-base-100">
+      {/* <header className="navbar bg-base-100">
         <div className="flex-1">
           <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
         </div>
@@ -40,8 +40,10 @@ const Layout = () => {
             </li>
           </ul>
         </div>
-      </header>
-      <main className="container p-8 max-w-full"><Outlet /></main>
+      </header> */}
+      <main className="container p-8 max-w-full">
+        <Outlet />
+      </main>
     </>
   );
 };

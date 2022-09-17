@@ -52,3 +52,26 @@ export const favouritePokemonMutation = {
     }
   },
 };
+
+export const addPokemonToTeam = {
+  query: (id) => ({
+    url: "team/togglePokemon",
+    data: {
+      data: { pokemonId: id },
+    },
+    method: "put",
+  }),
+  transformResponse: (response) => ({ data: response.data }),
+};
+
+export const getTeam = {
+  query: (params) => ({
+    url: "team",
+    method: "get",
+    params: {
+      "populate[pokemons][populate][types]": "*",
+      ...params,
+    },
+  }),
+  transformResponse: (response) => ({ data: response.data }),
+};
