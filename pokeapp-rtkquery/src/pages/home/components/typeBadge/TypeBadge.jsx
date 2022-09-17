@@ -1,5 +1,4 @@
 import React from "react";
-import { getTypeBadgeColor } from "../../../../helpers/typeBadgeColor";
 
 const TypeBadge = ({ type, color }) => {
   return (
@@ -7,7 +6,7 @@ const TypeBadge = ({ type, color }) => {
       style={{ backgroundColor: color }}
       className={`badge badge-sm badge-outline`}
     >
-      <span className={`font-bold`}>{type}</span>
+      <span className={`font-black uppercase`}>{type}</span>
     </div>
   );
 };

@@ -17,13 +17,13 @@ const MainPokeCard = ({
   };
 
   return (
-    <div className="card bg-slate-900 shadow-xl p-4">
+    <div className="card bg-slate-900 shadow-xl p-4 max-w-[220px] max-h-72">
       <figure className="rounded-2xl overflow-hidden border-2">
         <img className="bg-zinc-800" src={image} alt={name || "Pokemon"} />
       </figure>
       <div className="card-body p-2">
         <div className="card-title justify-between">
-          <h2>{name}</h2>
+          <h2 className="capitalize">{name}</h2>
           <div className="w-8 h-8 text-rose-500">
             <LikedButton onChange={handleChangeLiked} liked={favourite} />
           </div>

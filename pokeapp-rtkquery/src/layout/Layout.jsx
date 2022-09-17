@@ -6,9 +6,9 @@ const Layout = () => {
     <>
       <header className="navbar bg-base-100">
         <div className="flex-1">
-          <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
+          <a className="btn btn-ghost normal-case text-xl">Demo RTKQuery Pokemon</a>
         </div>
-        <div className="flex-none">
+        {/* <div className="flex-none">
           <ul className="menu menu-horizontal p-0">
             <li>
               <a>Item 1</a>
@@ -39,7 +39,7 @@ const Layout = () => {
               <a>Item 3</a>
             </li>
           </ul>
-        </div>
+        </div> */}
       </header>
       <main className="container p-8 max-w-full"><Outlet /></main>
     </>
