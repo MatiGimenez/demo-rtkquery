@@ -8,10 +8,10 @@ const PokeRowCard = ({
 }) => {
   return (
     <div
-      className={`border border-gray-400 card w-40 bg-base-100 ${className}`}
+      className={`border border-gray-400 card w-full bg-base-100 ${className}`}
     >
       <div className="p-2 flex items-center justify-start">
-        <img className="w-10 h-10" src={image} />
+        <img className="w-12 h-auto" src={image} />
         <p style={{ color }} className="ml-2 text-md capitalize">
           {name}
         </p>

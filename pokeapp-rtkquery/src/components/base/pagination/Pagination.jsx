@@ -11,17 +11,17 @@ const Pagination = ({
       <button
         onClick={() => onPrevPage(page - 1)}
         disabled={page === 1}
-        className="btn btn-lg"
+        className="btn btn-md"
       >
-        «
+        👈
       </button>
-      <button className="btn btn-lg">Página {page}</button>
+      <button className="btn btn-md">Página {page}</button>
       <button
         onClick={() => onNextPage(page + 1)}
         disabled={page === pageCount}
-        className="btn btn-lg"
+        className="btn btn-md"
       >
-        »
+        👉
       </button>
     </div>
   );
