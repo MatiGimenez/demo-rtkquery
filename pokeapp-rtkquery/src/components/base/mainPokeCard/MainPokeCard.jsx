@@ -1,7 +1,8 @@
 import React from "react";
 import TypeBadge from "../typeBadge/TypeBadge";
 import LikedButton from "../likedButton/LikedButton";
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
+import pokemonApi from "../../../store/slices/pokemonApi";
 
 const MainPokeCard = ({
   id,
@@ -12,6 +13,14 @@ const MainPokeCard = ({
   onClickFav = () => null,
   onAddPokemon = () => null,
 }) => {
+  /**
+   * We can access currentData State from any component
+   */
+  const { currentData = {} } = pokemonApi.endpoints.getTeam.useQueryState();
+  const isPokemonInTeam = currentData?.data?.attributes?.pokemons.data.find(
+    (poke) => poke.id === id
+  );
+
   return (
     <div className="card bg-slate-900 shadow-xl p-4 max-w-[220px] max-h-72">
       <figure className="rounded-2xl overflow-hidden border-2">
@@ -36,9 +45,13 @@ const MainPokeCard = ({
       </div>
       <button
         onClick={onAddPokemon}
-        className="border border-gray-400 btn btn-circle flex absolute top-0 right-0 items-center justify-center"
+        className="border border-gray-700 btn btn-sm btn-circle flex absolute top-0 right-0 items-center justify-center"
       >
-        <PlusIcon className="w-6 h-6" />
+        {isPokemonInTeam ? (
+          <MinusIcon className="text-red-500 w-6 h-6" />
+        ) : (
+          <PlusIcon className="w-6 h-6 text-green-300" />
+        )}
       </button>
     </div>
   );

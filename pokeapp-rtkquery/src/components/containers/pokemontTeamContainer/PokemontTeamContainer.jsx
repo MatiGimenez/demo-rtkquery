@@ -1,13 +1,21 @@
 import React from "react";
-import { useGetTeamQuery } from "../../../store/slices/pokemonApi";
+import {
+  useAddPokemonToTeamMutation,
+  useGetTeamQuery,
+} from "../../../store/slices/pokemonApi";
 import PokeSquareCard from "../../base/pokeSquareCard/PokeSquareCard";
 
 const PokemontTeamContainer = () => {
   /**
    * GET Pokemons Team
    */
-  const { data: { data: pokemonTeam } = {}, isLoading: isLoadingTeam } =
-    useGetTeamQuery();
+  const {
+    data: { data: pokemonTeam } = {},
+    isLoading,
+    isFetching,
+  } = useGetTeamQuery();
+
+  const [togglePokemon] = useAddPokemonToTeamMutation();
 
   return (
     <div>
@@ -20,9 +28,12 @@ const PokemontTeamContainer = () => {
               name={attributes.name}
               color={attributes.types?.data?.[0]?.attributes?.color}
               image={attributes.image}
+              onClickClose={() => togglePokemon(id)}
             />
           )
         )}
+        {isLoading ||
+          (isFetching && <div className="text-white text-sm">Loading...</div>)}
       </div>
     </div>
   );

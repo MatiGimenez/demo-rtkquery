@@ -72,10 +72,6 @@ export const favouritePokemonMutation = {
     // Get All Displayed Pokemons
     const { data: currentPokemons } =
       pokemonApi.endpoints.getPokemons.select(getPokemonsQueryArgs)(state).data;
-    console.log(
-      "🚀 ~ file: pokemonQueries.js ~ line 74 ~ currentPokemons",
-      currentPokemons
-    );
 
     // Patch current pokemons in screen
     const patchResultFavourite = dispatch(

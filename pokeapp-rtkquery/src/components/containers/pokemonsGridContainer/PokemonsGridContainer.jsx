@@ -5,6 +5,7 @@ import {
   useAddPokemonToTeamMutation,
   useFavouritePokemonMutation,
   useGetPokemonsQuery,
+  useGetTeamQuery,
 } from "../../../store/slices/pokemonApi";
 import MainPokeCard from "../../base/mainPokeCard/MainPokeCard";
 import Pagination from "../../base/pagination/Pagination";
@@ -19,12 +20,11 @@ const PokemonsGridContainer = () => {
     pageSize: INITIAL_PAGESIZE,
   });
 
+  const PAGE_SIZE = searchParams.get("pageSize");
   const POKEMONS_QUERY_ARGS = pokemonsArgsQuery({
     page: searchParams.get("page"),
-    pageSize: searchParams.get("pageSize"),
+    pageSize: PAGE_SIZE,
   });
-
-  const PAGE_SIZE = searchParams.get("pageSize");
 
   /**
    * GET Pokemons by Page and PageSize
