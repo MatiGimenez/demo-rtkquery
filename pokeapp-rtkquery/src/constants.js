@@ -8,3 +8,5 @@ export const pokemonsArgsQuery = ({ page = 1, pageSize = 6 }) => ({
   "pagination[pageSize]": pageSize,
   sort: "name",
 });
+
+export const POKEMON_CACHE_MUTATION = "shared-toggle-pokemon-cache";

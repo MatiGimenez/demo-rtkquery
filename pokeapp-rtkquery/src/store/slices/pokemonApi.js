@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import baseAxiosQuery from "../../helpers/baseAxiosQuery";
 import {
-  addPokemonToTeam,
+  addPokemonToTeamMutation,
   favouritePokemonMutation,
   getPokemonByNameQuery,
   getPokemonsQuery,
@@ -17,7 +17,7 @@ const pokemonApi = createApi({
     getPokemonByName: builder.query(getPokemonByNameQuery),
     getPokemons: builder.query(getPokemonsQuery),
     favouritePokemon: builder.mutation(favouritePokemonMutation),
-    addPokemonToTeam: builder.mutation(addPokemonToTeam),
+    addPokemonToTeam: builder.mutation(addPokemonToTeamMutation),
     getTeam: builder.query(getTeam),
   }),
 });

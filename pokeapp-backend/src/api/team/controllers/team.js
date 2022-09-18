@@ -19,13 +19,19 @@ module.exports = createCoreController("api::team.team", ({ strapi }) => ({
       );
 
       const pokemonsId = currentTeam.pokemons.map((poke) => poke.id);
-      const hasPokemon = pokemonsId.includes(pokemonId);
+      const isPokemonExist = pokemonsId.includes(pokemonId);
 
       let pokesUpdated = [];
-      if (!hasPokemon) {
-        pokesUpdated = pokemonsId.concat(pokemonId);
-      } else {
+      if (isPokemonExist) {
         pokesUpdated = pokemonsId.filter((pokeId) => pokeId !== pokemonId);
+      } else {
+        if (currentTeam.pokemons.length >= 6) {
+          return ctx.preconditionFailed(
+            "No puedes tener más de 6 pokemones en tu equipo"
+          );
+        }
+
+        pokesUpdated = pokemonsId.concat(pokemonId);
       }
 
       const entity = await strapi.entityService.update(
@@ -40,12 +46,11 @@ module.exports = createCoreController("api::team.team", ({ strapi }) => ({
       );
 
       const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
-      const { data } = this.transformResponse(sanitizedEntity);
+      const { data, meta } = this.transformResponse(sanitizedEntity);
 
       return {
         data,
-        isValid: true,
-        messages: [],
+        meta,
       };
     } catch (err) {
       return err;

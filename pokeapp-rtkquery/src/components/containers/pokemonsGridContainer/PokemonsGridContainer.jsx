@@ -1,11 +1,10 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-import { pokemonsArgsQuery } from "../../../constants";
+import { pokemonsArgsQuery, POKEMON_CACHE_MUTATION } from "../../../constants";
 import {
   useAddPokemonToTeamMutation,
   useFavouritePokemonMutation,
   useGetPokemonsQuery,
-  useGetTeamQuery,
 } from "../../../store/slices/pokemonApi";
 import MainPokeCard from "../../base/mainPokeCard/MainPokeCard";
 import Pagination from "../../base/pagination/Pagination";
@@ -38,7 +37,9 @@ const PokemonsGridContainer = () => {
   });
 
   const [doFavouritePokemon] = useFavouritePokemonMutation();
-  const [addPokemonToTeam] = useAddPokemonToTeamMutation();
+  const [addPokemonToTeam] = useAddPokemonToTeamMutation({
+    fixedCacheKey: POKEMON_CACHE_MUTATION,
+  });
 
   /**
    * Handlers

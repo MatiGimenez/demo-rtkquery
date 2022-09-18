@@ -35,10 +35,10 @@ export const favouritePokemonMutation = {
     data: { data: { ...patch } },
     method: "put",
   }),
-  invalidatesTags: (result, error, params) => [
-    // { type: "Pokemon", id: params.id },
-    // { type: "Pokemon", id: "FAVOURITES_LIST" },
-  ],
+  // invalidatesTags: (result, error, params) => [
+  //   // { type: "Pokemon", id: params.id },
+  //   // { type: "Pokemon", id: "FAVOURITES_LIST" },
+  // ],
   async onQueryStarted(
     { id, patch, searchParams },
     { dispatch, queryFulfilled, getState }
@@ -101,7 +101,7 @@ export const favouritePokemonMutation = {
   },
 };
 
-export const addPokemonToTeam = {
+export const addPokemonToTeamMutation = {
   query: (id) => ({
     url: "team/togglePokemon",
     data: {
@@ -113,11 +113,6 @@ export const addPokemonToTeam = {
   invalidatesTags: (result, error, params) => [
     { type: "Pokemon", id: "TEAM_LIST" },
   ],
-  // async onQueryStarted(params, { dispatch, queryFulfilled, getState }) {
-  //   try {
-  //     await queryFulfilled;
-  //   } catch {}
-  // },
 };
 
 export const getTeam = {
