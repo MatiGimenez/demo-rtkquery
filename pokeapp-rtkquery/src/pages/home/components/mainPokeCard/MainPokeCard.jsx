@@ -6,6 +6,7 @@ import {
   useFavouritePokemonMutation,
 } from "../../../../store/slices/pokemonApi";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { useSearchParams } from "react-router-dom";
 
 const MainPokeCard = ({
   id,
@@ -13,12 +14,21 @@ const MainPokeCard = ({
   image = "",
   favourite = false,
   types = [],
+  handleFavourite = () => null,
 }) => {
+  const [searchParams] = useSearchParams();
   const [doFavouritePokemon] = useFavouritePokemonMutation();
   const [addPokemonToTeam] = useAddPokemonToTeamMutation();
 
   const handleChangeLiked = (e) => {
-    doFavouritePokemon({ id, data: { favourite: e.target.checked } });
+    doFavouritePokemon({
+      id,
+      patch: { favourite: e.target.checked },
+      searchParams: {
+        page: searchParams.get("page"),
+        pageSize: searchParams.get("pageSize"),
+      },
+    });
   };
 
   return (
@@ -30,7 +40,7 @@ const MainPokeCard = ({
         <div className="card-title justify-between">
           <h2 className="capitalize">{name}</h2>
           <div className="w-8 h-8 text-rose-500">
-            <LikedButton onChange={handleChangeLiked} liked={favourite} />
+            <LikedButton onChange={handleFavourite} liked={favourite} />
           </div>
         </div>
         <div className="card-actions justify-end">

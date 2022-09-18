@@ -1,4 +1,4 @@
-import { FAVOURITES_ARGS_QUERY } from "../../constants";
+import { FAVOURITES_ARGS_QUERY, pokemonsArgsQuery } from "../../constants";
 import pokemonApi from "../slices/pokemonApi";
 
 export const getPokemonByNameQuery = {
@@ -29,38 +29,74 @@ export const getPokemonsQuery = {
 };
 
 export const favouritePokemonMutation = {
-  query: ({ id, ...patch }) => ({
+  query: ({ id, patch }) => ({
     url: `pokemons/${id}`,
     //url: https://run.mocky.io/v3/c670d170-0ccd-4435-be96-6cfcd52e27bf?mocky-delay=100ms
-    data: patch,
+    data: { data: { ...patch } },
     method: "put",
   }),
   invalidatesTags: (result, error, params) => [
     // { type: "Pokemon", id: params.id },
-    { type: "Pokemon", id: "FAVOURITES_LIST" },
+    // { type: "Pokemon", id: "FAVOURITES_LIST" },
   ],
   async onQueryStarted(
-    { id, ...patch },
+    { id, patch, searchParams },
     { dispatch, queryFulfilled, getState }
   ) {
-    console.log(getState());
-
+    const state = getState();
+    const getPokemonsQueryArgs = pokemonsArgsQuery({
+      page: searchParams?.page,
+      pageSize: searchParams?.pageSize,
+    });
     /**
      * Update Cache for all get Pokemons
      */
     const patchResult = dispatch(
-      pokemonApi.util.updateQueryData("getPokemons", undefined, (draft) => {
-        draft?.data?.forEach((pokemon) => {
-          if (pokemon.id === id) {
-            Object.assign(pokemon.attributes, patch.data);
-          }
-        });
-      })
+      pokemonApi.util.updateQueryData(
+        "getPokemons",
+        getPokemonsQueryArgs,
+        (draft) => {
+          draft?.data?.forEach((pokemon) => {
+            if (pokemon.id === id) {
+              Object.assign(pokemon.attributes, patch);
+            }
+          });
+        }
+      )
     );
+
+    /**
+     * Update Favourites List With Optimistic
+     */
+
+    // Get All Displayed Pokemons
+    const { data: currentPokemons } =
+      pokemonApi.endpoints.getPokemons.select(getPokemonsQueryArgs)(state).data;
+
+    // Patch current pokemons in screen
+    const patchResultFavourite = dispatch(
+      pokemonApi.util.updateQueryData(
+        "getPokemons",
+        FAVOURITES_ARGS_QUERY,
+        (draft) => {
+          const isPokemonExist = draft?.data?.find((p) => p.id === id);
+
+          if (isPokemonExist) {
+            const newDataDraft = draft?.data?.filter((p) => p.id !== id);
+            draft.data = newDataDraft;
+          } else {
+            const pokeToAdd = currentPokemons.find((p) => p.id === id);
+            draft.data = draft?.data?.concat(pokeToAdd);
+          }
+        }
+      )
+    );
+
     try {
       await queryFulfilled;
     } catch {
       patchResult.undo();
+      patchResultFavourite.undo();
     }
   },
 };
@@ -77,15 +113,11 @@ export const addPokemonToTeam = {
   invalidatesTags: (result, error, params) => [
     { type: "Pokemon", id: "TEAM_LIST" },
   ],
-  async onQueryStarted(params, { dispatch, queryFulfilled, getState }) {
-    console.log(
-      "🚀 ~ file: pokemonQueries.js ~ line 78 ~ onQueryStarted ~ getState",
-      getState()
-    );
-    try {
-      await queryFulfilled;
-    } catch {}
-  },
+  // async onQueryStarted(params, { dispatch, queryFulfilled, getState }) {
+  //   try {
+  //     await queryFulfilled;
+  //   } catch {}
+  // },
 };
 
 export const getTeam = {
