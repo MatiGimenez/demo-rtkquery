@@ -1,7 +1,11 @@
 import React from "react";
 import TypeBadge from "../typeBadge/TypeBadge";
 import LikedButton from "../likedButton/LikedButton";
-import { useFavouritePokemonMutation } from "../../../../store/slices/pokemonApi";
+import {
+  useAddPokemonToTeamMutation,
+  useFavouritePokemonMutation,
+} from "../../../../store/slices/pokemonApi";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 const MainPokeCard = ({
   id,
@@ -11,6 +15,7 @@ const MainPokeCard = ({
   types = [],
 }) => {
   const [doFavouritePokemon] = useFavouritePokemonMutation();
+  const [addPokemonToTeam] = useAddPokemonToTeamMutation();
 
   const handleChangeLiked = (e) => {
     doFavouritePokemon({ id, data: { favourite: e.target.checked } });
@@ -38,6 +43,12 @@ const MainPokeCard = ({
           ))}
         </div>
       </div>
+      <button
+        onClick={() => addPokemonToTeam(id)}
+        className="border border-gray-400 btn btn-circle flex absolute top-0 right-0 items-center justify-center"
+      >
+        <PlusIcon className="w-6 h-6" />
+      </button>
     </div>
   );
 };
